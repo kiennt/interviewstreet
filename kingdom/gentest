@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+import sys
+USAGE = """
+USAGE genfile <type> <filename> n
+  where <type> in [1, 2]
+USAGE:
+  1. genfile 1 <filename> n
+      where n > 55
+  2. genfile 2 <filename> n times
+      where n > time * time
+"""
+
+def gentest1(filename, n):
+  if n < 56:
+    print "n must >= 55"
+    return
+
+  f = open(filename, 'w')
+  f.write("%d %d\n" % (n, n * 10))
+  for i in range(1, 11):
+    for j in range(i + 1, n + 1):
+      f.write("%d %d\n" % (i, j))
+  for i in range(1, 56):
+    f.write("%d %d\n" % (n - i, n))
+  f.close()
+
+def gentest2(filename, n, times):
+  if n < times * times:
+    print "n must > times * times"
+    return
+
+  f = open(filename, 'w')
+  f.write("%d %d\n" % (n, (n - times) * times))
+  for i in range(1, n - times + 1):
+    for j in range(i + 1, i + 1 + times):
+      f.write("%d %d\n" % (i, j))
+  for i in range(1, times * times + 1):
+    f.write("%d %d\n" % (i, n))
+
+def main():
+  if len(sys.argv) < 2:
+    print USAGE
+  elif int(sys.argv[1]) == 1:
+    if len(sys.argv) < 4: 
+      print USAGE
+      return
+    gentest1(sys.argv[2], int(sys.argv[3]))
+  elif int(sys.argv[1]) == 2:
+    if len(sys.argv) < 5:
+      print USAGE
+      return
+    gentest2(sys.argv[2], int(sys.argv[3]), int(sys.argv[4]))
+  else:
+    print USAGE
+main()
+    
